@@ -55,35 +55,19 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m;
-    cin >> n >> m;
-
-    vector<long> t(m);
-    multiset<long> h;
+    int n;
+    cin >> n;
+    long c = 0;
+    long s = 0;
+    long res = LONG_MIN;
     for (int i = 0; i < n; i++)
     {
-        long p;
-        cin >> p;
-        h.insert(p);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> t[i];
+        long a;
+        cin >> a;
+        c += a;
+        res = max(res, c - s);
+        s = min(s, c);
     }
 
-    // 3 5 5 7 8
-    // 4 8 3
-
-    for (int i = 0; i < m; i++)
-    {
-        auto j = h.upper_bound(t[i]);
-        if (j == h.begin())
-        {
-            cout << -1 << endl;
-            continue;
-        }
-        --j;
-        cout << *j << endl;
-        h.erase(j);
-    }
+    cout << res << endl;
 }

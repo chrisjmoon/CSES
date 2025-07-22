@@ -55,35 +55,27 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m;
-    cin >> n >> m;
-
-    vector<long> t(m);
-    multiset<long> h;
+    int n;
+    cin >> n;
+    vector<long> x(n);
     for (int i = 0; i < n; i++)
     {
-        long p;
-        cin >> p;
-        h.insert(p);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> t[i];
+        cin >> x[i];
     }
 
-    // 3 5 5 7 8
-    // 4 8 3
-
-    for (int i = 0; i < m; i++)
+    sort(x.begin(), x.end());
+    long s = 0;
+    // at each i, can you form s + 1?
+    for (int i = 0; i < n; i++)
     {
-        auto j = h.upper_bound(t[i]);
-        if (j == h.begin())
+        if (x[i] <= s + 1)
         {
-            cout << -1 << endl;
-            continue;
+            s += x[i];
         }
-        --j;
-        cout << *j << endl;
-        h.erase(j);
+        else
+        {
+            break;
+        }
     }
+    cout << s + 1 << endl;
 }

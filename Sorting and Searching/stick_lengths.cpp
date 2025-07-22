@@ -55,35 +55,22 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m;
-    cin >> n >> m;
+    int n;
+    cin >> n;
 
-    vector<long> t(m);
-    multiset<long> h;
+    vector<long> p(n);
     for (int i = 0; i < n; i++)
     {
-        long p;
-        cin >> p;
-        h.insert(p);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> t[i];
+        cin >> p[i];
     }
 
-    // 3 5 5 7 8
-    // 4 8 3
-
-    for (int i = 0; i < m; i++)
+    sort(p.begin(), p.end());
+    long a = p[n / 2];
+    long r = 0;
+    for (int i = 0; i < n; i++)
     {
-        auto j = h.upper_bound(t[i]);
-        if (j == h.begin())
-        {
-            cout << -1 << endl;
-            continue;
-        }
-        --j;
-        cout << *j << endl;
-        h.erase(j);
+        r += abs(p[i] - a);
     }
+
+    cout << r << endl;
 }

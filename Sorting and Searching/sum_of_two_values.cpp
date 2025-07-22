@@ -55,35 +55,45 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n, m;
-    cin >> n >> m;
-
-    vector<long> t(m);
-    multiset<long> h;
+    int n;
+    long x;
+    cin >> n >> x;
+    vector<pair<long, long>> a;
     for (int i = 0; i < n; i++)
     {
-        long p;
-        cin >> p;
-        h.insert(p);
-    }
-    for (int i = 0; i < m; i++)
-    {
-        cin >> t[i];
+        long w;
+        cin >> w;
+        a.emplace_back(w, i);
     }
 
-    // 3 5 5 7 8
-    // 4 8 3
-
-    for (int i = 0; i < m; i++)
+    sort(a.begin(), a.end(), [](pair<long, long> x, pair<long, long> y)
+         { return x.first < y.first; });
+    int i, j;
+    i = 0;
+    j = n - 1;
+    while (i < j)
     {
-        auto j = h.upper_bound(t[i]);
-        if (j == h.begin())
+        // cout << a[i].first << " " << a[j].first << endl;
+        if ((a[i].first + a[j].first) == x)
         {
-            cout << -1 << endl;
-            continue;
+            break;
         }
-        --j;
-        cout << *j << endl;
-        h.erase(j);
+        if ((a[i].first + a[j].first) > x)
+        {
+            j--;
+        }
+        else
+        {
+            i++;
+        }
+    }
+
+    if (i == j)
+    {
+        cout << "IMPOSSIBLE" << endl;
+    }
+    else
+    {
+        cout << a[i].second + 1 << " " << a[j].second + 1 << endl;
     }
 }
