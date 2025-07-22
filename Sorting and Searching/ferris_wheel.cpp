@@ -55,20 +55,30 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n;
-    cin >> n;
-
-    set<long> s;
-    int res = 0;
+    long n, x;
+    cin >> n >> x;
+    vector<long> p(n);
     for (int i = 0; i < n; i++)
     {
-        long a;
-        cin >> a;
-        if (!s.count(a))
+        cin >> p[i];
+    }
+
+    // sort and for each p search for the largest weight that is less than or equal
+    // to x - p
+
+    sort(p.begin(), p.end());
+    int res = 0;
+    int i = 0;
+    int j = n - 1;
+
+    while (i <= j)
+    {
+        if (p[i] + p[j] <= x)
         {
-            res += 1;
+            i += 1;
         }
-        s.insert(a);
+        res += 1;
+        j -= 1;
     }
 
     cout << res << endl;

@@ -54,22 +54,4 @@ int main()
 {
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
-
-    int n;
-    cin >> n;
-
-    set<long> s;
-    int res = 0;
-    for (int i = 0; i < n; i++)
-    {
-        long a;
-        cin >> a;
-        if (!s.count(a))
-        {
-            res += 1;
-        }
-        s.insert(a);
-    }
-
-    cout << res << endl;
 }

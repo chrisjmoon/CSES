@@ -55,20 +55,39 @@ int main()
     ios::sync_with_stdio(false);
     cin.tie(nullptr);
 
-    int n;
-    cin >> n;
-
-    set<long> s;
-    int res = 0;
+    long n, m, k;
+    cin >> n >> m >> k;
+    vector<long> a(n), b(m);
     for (int i = 0; i < n; i++)
     {
-        long a;
-        cin >> a;
-        if (!s.count(a))
+        cin >> a[i];
+    }
+    for (int i = 0; i < m; i++)
+    {
+        cin >> b[i];
+    }
+
+    int res = 0;
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end());
+
+    int i = 0, j = 0;
+    while ((i < n) && (j < m))
+    {
+        if (a[i] < b[j] - k)
         {
+            i += 1;
+        }
+        else if (a[i] > b[j] + k)
+        {
+            j += 1;
+        }
+        else
+        {
+            i += 1;
+            j += 1;
             res += 1;
         }
-        s.insert(a);
     }
 
     cout << res << endl;
