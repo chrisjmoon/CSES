@@ -1,6 +1,74 @@
 #include <bits/stdc++.h>
 using namespace std;
 
+struct MedianSets
+{
+    // invariant left.size() == ceil(k/2), right.size() == floor(k/2)
+    multiset<int> left, right;
+    int k;
+
+    MedianSets(int k, vector<int> window)
+    {
+        this->k = k;
+        for (auto x : window)
+        {
+            left.insert(x);
+        }
+        this->balance();
+    }
+
+    int median()
+    {
+        return *left.rbegin();
+    }
+
+    void push(int x)
+    {
+        if (x <= this->median())
+        {
+            left.insert(x);
+        }
+        else
+        {
+            right.insert(x);
+        }
+    }
+
+    void pop(int x)
+    {
+        if (left.find(x) != left.end())
+        {
+            left.erase(left.find(x));
+        }
+        else if (right.find(x) != right.end())
+        {
+            right.erase(right.find(x));
+        }
+    }
+
+    void balance()
+    {
+        if (left.size() + right.size() != k)
+        {
+            return;
+        }
+
+        while (left.size() > (k + 1) / 2)
+        {
+            int x = *left.rbegin();
+            left.erase(--left.end());
+            right.insert(x);
+        }
+
+        while (right.size() > k / 2)
+        {
+            int x = *right.begin();
+            right.erase(right.begin());
+            left.insert(x);
+        }
+    }
+};
+
 int main()
 {
     int n, k;
@@ -12,70 +80,17 @@ int main()
         cin >> x[i];
     }
 
-    set<int> left, right;
-    vector<int> w;
-    for (int i = 0; i < k; i++)
-    {
-        w.push_back(x[i]);
-    }
-    sort(w.begin(), w.end());
-    for (int i = 0; i < k / 2; i++)
-    {
-        left.insert(w[i]);
-    }
-    for (int i = k / 2; i < k; i++)
-    {
-        right.insert(w[i]);
-    }
-
-    vector<int> ans = {*left.rbegin()};
+    MedianSets MS(k, vector<int>(x.begin(), x.begin() + k));
+    vector<int> res = {MS.median()};
     for (int i = k; i < n; i++)
     {
-        cout << "left" << endl;
-        for (auto v : left)
-        {
-            cout << v << " ";
-        }
-        cout << endl;
-        cout << "right" << endl;
-        for (auto v : right)
-        {
-            cout << v << " ";
-        }
-        cout << endl;
-
-        // remove i - k
-        if (x[i - k] <= *left.rbegin())
-        {
-            left.erase(x[i - k]);
-            left.insert(*right.begin());
-            right.erase(*right.begin());
-        }
-        else
-        {
-            right.erase(x[i - k]);
-            right.insert(*left.rbegin());
-            left.erase(*left.rbegin());
-        }
-
-        // add i
-        if (x[i] <= *left.rbegin())
-        {
-            left.insert(x[i]);
-            right.insert(*left.rbegin());
-            left.erase(*left.rbegin());
-        }
-        else
-        {
-            right.insert(x[i]);
-            left.insert(*right.begin());
-            right.erase(*right.begin());
-        }
-
-        ans.push_back(*left.rbegin());
+        MS.push(x[i]);
+        MS.pop(x[i - k]);
+        MS.balance();
+        res.push_back(MS.median());
     }
 
-    for (auto v : ans)
+    for (auto v : res)
     {
         cout << v << " ";
     }
