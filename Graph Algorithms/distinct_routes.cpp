@@ -34,10 +34,15 @@ vector<vector<int>> dfs(int c, bitset<1000> &edges, vector<int> &path)
             dfs(v, edges, path);
             edges[edge_id] = false;
         }
-        elif (seen[v] == 2)
+        else if (seen[v] == 2)
         {
             for (int j = 0; j < eh[v].size(); j++)
             {
+                bitset<1000> overlap = edges & eh[v][j];
+                if (overlap == bitset<1000>{0})
+                {
+                    
+                }
             }
         }
     }
