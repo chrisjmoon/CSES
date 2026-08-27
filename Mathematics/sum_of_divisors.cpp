@@ -45,7 +45,6 @@ long long modpow(long long a, long long e, long long mod)
 // each divisor contributes floor(n / d)
 // floor(n / 1), floor(n / 2), floor(n / 3), floor(n / 4), ...
 // floor(n / (floor(n / 2) + 1))
-
 int main()
 {
     long long n;
