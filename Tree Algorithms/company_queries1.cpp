@@ -74,5 +74,58 @@ int main()
     int n;
     cin >> n;
 
+    int q;
+    cin >> q;
+
     static int K = ceil(log2(n));
+    vector<vector<int>> pk(n, vector<int>(K + 1, -1));
+    pk[0][0] = -1;
+
+    for (int i = 0; i < n - 1; i++)
+    {
+        int p;
+        cin >> p;
+        p--;
+
+        pk[i + 1][0] = p;
+    }
+
+    for (int jump = 1; jump <= K; jump++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            // making jump of 2^jump from i
+            // this is equivalent of making jump of 2^{jump - 1} from i to x
+            // then making jump of 2^{jump - 1} from x
+
+            int intermediate_boss{pk[i][jump - 1]};
+            if (intermediate_boss != -1)
+            {
+                pk[i][jump] = pk[intermediate_boss][jump - 1];
+            }
+        }
+    }
+
+    while (q--)
+    {
+        int x, k;
+        cin >> x >> k;
+        x--;
+
+        int boss{x};
+        for (int shift = 0; shift <= K; shift++)
+        {
+            if ((1 << shift) & k)
+            {
+                boss = pk[boss][shift];
+
+                if (boss == -1)
+                {
+                    break;
+                }
+            }
+        }
+
+        cout << (boss == -1 ? -1 : boss + 1) << endl;
+    }
 }
